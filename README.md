@@ -70,9 +70,9 @@ npm run dev:server   # API only
 npm run dev:client   # web app only
 ```
 
-The Vite dev server proxies `/api` to the API, so no CORS setup is needed locally. If MongoDB is
-unavailable in development, the API still starts and reports the database as `disconnected`
-through the health endpoint; in production it exits instead.
+The Vite dev server proxies `/api` to the API, so no CORS setup is needed locally. The API only
+starts accepting requests after it connects to MongoDB. If the initial connection fails it retries
+a few times, then exits with an error, so make sure MongoDB is running first.
 
 ### Production build
 
