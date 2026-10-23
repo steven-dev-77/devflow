@@ -1,6 +1,8 @@
 import 'dotenv/config';
 import { z } from 'zod';
 
+export const MONGODB_URI_PATTERN = /^mongodb(\+srv)?:\/\/\S+$/;
+
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().int().min(1).max(65535).default(5000),
@@ -17,7 +19,7 @@ const envSchema = z.object({
   MONGODB_URI: z
     .string()
     .min(1, 'MONGODB_URI is required')
-    .refine((value) => /^mongodb(\+srv)?:\/\//.test(value), {
+    .refine((value) => MONGODB_URI_PATTERN.test(value), {
       message: 'MONGODB_URI must start with mongodb:// or mongodb+srv://',
     }),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
